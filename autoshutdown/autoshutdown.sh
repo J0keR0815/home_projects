@@ -11,6 +11,7 @@
 # - Check for no connected IP-addresses
 # - Check for no active TCP connections on specified port
 # - Check for no specified processes to be active
+# - Check if smartd is running a device check if activated
 #
 # The "specified" options are found in the configuration file
 
@@ -41,6 +42,7 @@ t_range_excl_up=""
 ip_addr=""
 ports=""
 procs=""
+smart_check=0
 
 config="/etc/autoshutdown.conf"
 #config="$(dirname $0)/autoshutdown.conf"
@@ -310,6 +312,39 @@ function check_procs() {
     return
 }
 
+function check_smart() {
+    # This function checks if smartd is running a device check
+    #
+    # @return   "", if smartd is not running a device check, else the UUID of
+    #           the device
+
+    if [ ${smart_check} -eq 0 ]
+    then
+        echo ""
+        return
+    fi
+
+    # Get device UUIDs and check for each device if smartd is running a check
+    local uuids=($(blkid | sed 's/^.*UUID=\([^\t ]\+\).*$/\1/g' | tr -d '\"'))
+    for uuid in "${uuids[@]}"
+    do
+        local exec_status="$( \
+            smartctl -c "/dev/disk/by-uuid/${uuid}" | \
+                grep -i "self-test execution status" \
+        )"
+
+        echo "${exec_status}" | grep -qi "in progress"
+        if [ $? -eq 0 ]
+        then
+            echo "/dev/disk/by-uuid/${uuid}"
+            return
+        fi
+    done
+
+    echo ""
+    return
+}
+
 function check_time() {
     # This function checks if the current time is within the exclusive time
     # range where the host must be up.
@@ -513,7 +548,7 @@ function is_in_estab_conns() {
 }
 
 function is_numeric() {
-    # This function checks if the specified argument is a number with n
+    # This function checks if the specified argument is a number n,
     # with n in N U {0}.
     #
     # Usage: is_numeric <n>
@@ -634,6 +669,13 @@ then
     error "Invalid value \"${rounds}\" for option rounds: rounds must be > 0"
 fi
 
+# Check config option ${smart_check}
+is_numeric "${smart_check}"
+if [ $? -eq 0 ]
+then
+    error "Invalid value \"${smart_check}\" for option smart_check"
+fi
+
 declare -i r=${rounds}
 declare -i is_init=1
 declare -i is_match=0
@@ -703,6 +745,16 @@ do
     if [ ! -z "${proc_running}" ]
     then
         log "Found specified process \"${proc_running}\""
+
+        [ ${debug} -eq 0 ] && continue
+        is_match=1
+    fi
+
+    # Check if smartd is running a device check
+    smart_check_running="$(check_smart)"
+    if [ ! -z "${smart_check_running}" ]
+    then
+        log "Found running smartd device check \"${smart_check_running}\""
 
         [ ${debug} -eq 0 ] && continue
         is_match=1
