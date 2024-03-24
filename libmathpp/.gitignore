@@ -1,0 +1,10 @@
+# Exclude VSCode settings
+.vscode
+
+# Exclude build and install direcories
+build
+bin
+lib
+
+# Exclude temporary vim files
+*.swp
