@@ -6,6 +6,7 @@ set(
 
     # types
     types/Complex.h
+    types/Matrix.h
     types/Rational.h
 
 )
