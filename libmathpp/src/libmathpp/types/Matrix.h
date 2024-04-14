@@ -12,52 +12,126 @@
 
 // - - - - - - Project includes - - - - - -
 
-// - - - - - - Matrix - - - - - -
+#include "Vector.h"
 
-template <typename T, size_t numRows, size_t numCols>
-class Matrix {
-  public:
-    /**
-     * @brief Constructs a matrix
-     */
-    Matrix(const T &initVal = T(0));
+// - - - - - - Used namespaces or types - - - - - -
 
-    /**
-     * @brief Returns a string representation of this matrix
-     */
-    std::string str() const;
+/**
+ * @brief Specifies the namespace for the library libmathpp
+ */
+namespace mathpp {
 
-    /**
-     * @brief Returns
-     */
-    std::vector<T> operator[](int indexRow);
+  // - - - - - - Matrix - - - - - -
 
-    /**
-     * @brief Specifies the entries of this matrix
-     */
-    std::vector<T> _entries;
-};  // Matrix
+  template <typename T, size_t numRows, size_t numCols>
+  class Matrix {
+    public:
+      /**
+       * @brief Constructs a matrix
+       */
+      Matrix(const T &initVal = T(0));
 
-// - - - - - - Inline definitions - - - - - -
+      /**
+       * @brief Returns the specified row in {1, ..., numRows} of the matrix
+       * @throws std::out_of_range if the specified row > numRows
+       */
+      Vector<T, numCols, true> &operator[](std::size_t row);
 
-template <typename T, std::size_t numRows, std::size_t numCols>
-inline Matrix<T, numRows, numCols>::Matrix(const T &initVal) {
-  std::size_t numEntries {numCols * numRows};
-  this->_entries.reserve(numEntries);
-  for (std::size_t i {0}; i < numEntries; ++i) {
-    this->_entries = initVal;
+      /**
+       * @brief Returns the specified row in {1, ..., numRows} of the matrix
+       * @throws std::out_of_range if the specified row > numRows
+       */
+      const Vector<T, numCols, true> &operator[](std::size_t row) const;
+
+      /**
+       * @brief Returns a copy of specified column in {1, ..., numCols} of the
+       *        matrix
+       * @throws std::out_of_range if the specified col > numCols
+       */
+      Vector<T, numRows> operator[](std::size_t col);
+
+      /**
+       * @brief Sets the values of the specified vector for the entries in
+       *        col in {1, ..., numCols} of the matrix by copying the values
+       */
+      void setCol(std::size_t col, const Vector<T, numRows> &v);
+
+      /**
+       * @brief Sets the values of the specified vector for the entries in
+       *        col in {1, ..., numCols} of the matrix by moving the values
+       */
+      void setCol(std::size_t col, Vector<T, numRows> &&v);
+
+      /**
+       * @brief Returns a string representation of this matrix
+       * @todo IMPLEMENT
+       */
+      std::string str() const;
+
+    private:
+      /**
+       * @brief Specifies the entries of this matrix
+       */
+      std::array<Vector<T, numCols, true>, numRows> _entries;
+  };  // Matrix
+
+  // - - - - - - Inline definitions - - - - - -
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline Matrix<T, numRows, numCols>::Matrix(const T &initVal) {
+    for (std::size_t row {0}; row < numRows; ++row) {
+      this->_entries[row] = initVal;
+    }
   }
-}
 
-template <typename T, std::size_t numRows, std::size_t numCols>
-inline std::string Matrix<T, numRows, numCols>::str() const {
-  std::ostringstream ossResult;
-
-  std::ostringstream ossRow;
-  for (std::size_t indexRow {1}; indexRow <= numRows; ++indexRow) {
-    ossRow << "| ";
-    for (std::size_t col {1}; col <= numCols; ++col) {}
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline Vector<T, mumCols, true> Matrix<T, numRows, numCols>::operator[](
+    std::size_t row
+  ) {
+    return this->_entries.at(row - 1);
   }
-}
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline const Vector<T, mumCols, true> Matrix<T, numRows, numCols>::operator[](
+    std::size_t row
+  ) const {
+    return this->_entries.at(row - 1);
+  }
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline const Vector<T, numCols> Matrix<T, numRows, numCols>::operator[](
+    std::size_t col
+  ) const {
+    Vector<T, numRows> result;
+    for (std::size_t i {0}; i < numRows; ++i) {
+      result[i + 1] = this->_entries.at(i)[col]
+    }
+    return result;
+  }
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline void Matrix<T, numRows, numCols>::setCol(
+    std::size_t col, const Vector<T, numRows> &v
+  ) {
+    for (std::size_t i {0}; i < numRows; ++i) {
+      this->_entries.at(i)[col] = v[col];
+    }
+  }
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline void Matrix<T, numRows, numCols>::setCol(
+    std::size_t col, Vector<T, numRows> &&v
+  ) {
+    for (std::size_t i {0}; i < numRows; ++i) {
+      this->_entries.at(i)[col] = std::move(v[col]);
+    }
+  }
+
+  template <typename T, std::size_t numRows, std::size_t numCols>
+  inline std::string Matrix<T, numRows, numCols>::str() const {
+    return "";
+  }
+
+}  //namespace mathpp
 
 #endif  // MATRIX_H

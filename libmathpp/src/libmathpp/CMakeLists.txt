@@ -8,6 +8,7 @@ set(
     types/Complex.h
     types/Matrix.h
     types/Rational.h
+    types/Vector.h
 
 )
 
