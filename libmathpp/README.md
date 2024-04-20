@@ -10,9 +10,10 @@
 
 ## To do next ##
 
-1. **TEST:** [Rational numbers](src/libmathpp/types/Rational.h)
-2. **TEST:** [Numbers theory functions](src/libmathpp/num_theory.h)
-3. **TEST:** [Complex numbers](src/libmathpp/types/Complex.h)
-3. **TEST:** [Vector](src/libmathpp/types/Vector.h)
-4. **IMPLEMENT:** Logical and arithmetic operators [Complex numbers](src/libmathpp/types/Complex.h)
-5. **IMPLEMENT:** [Matrix datatype](src/libmathpp/types/Matrix.h)
+* **IMPLEMENT:** Install library into directory [lib](lib)
+* **TEST:** [Rational numbers](src/libmathpp/types/Rational.h)
+* **TEST:** [Numbers theory functions](src/libmathpp/num_theory.h)
+* **TEST:** [Complex numbers](src/libmathpp/types/Complex.h)
+* **TEST:** [Vector](src/libmathpp/types/Vector.h)
+* **IMPLEMENT:** Logical and arithmetic operators [Complex numbers](src/libmathpp/types/Complex.h)
+* **IMPLEMENT:** [Matrix datatype](src/libmathpp/types/Matrix.h)

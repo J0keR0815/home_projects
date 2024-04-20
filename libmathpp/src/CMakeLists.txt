@@ -1,9 +1,9 @@
-add_subdirectory("libmathpp")
+add_subdirectory("mathpp")
 
 set(
     LIBRARIES
     "${LIBRARIES}"
-    "${TARGET_LIBMATHPP}"
+    "${TARGET_MATHPP}"
 )
 
 add_executable(${TARGET_RUN_EXAMPLE} "main.cpp")

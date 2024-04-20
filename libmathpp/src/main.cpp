@@ -11,8 +11,8 @@
 
 // - - - - - - Project includes - - - - - -
 
-#include "libmathpp/num_theory.h"
-#include "libmathpp/types/Complex.h"
+#include "mathpp/num_theory.h"
+#include "mathpp/types/Complex.h"
 
 // - - - - - - Global definitions - - - - - -
 

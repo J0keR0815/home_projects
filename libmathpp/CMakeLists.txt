@@ -8,7 +8,7 @@ set(
 )
 string(CONCAT PROJECT_DESCRIPTION "${PROJECT_DESCRIPTION}" "calculations")
 project(
-    "libmathpp"
+    "mathpp"
     DESCRIPTION "${PROJECT_DESCRIPTION}"
     VERSION 0.0.1
     LANGUAGES CXX
@@ -37,14 +37,24 @@ if (NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 endif()
 
+# Set flag for creating shared library (Default: OFF)
+if (NOT DEFINED BUILD_SHARED_LIBS)
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
 # Set flag for profiling (Default: OFF)
 if (NOT DEFINED PROFILING)
     set(PROFILING OFF)
 endif()
 
 # Set flag for memory sanitize check (Default: OFF)
-if (NOT DEFINED SANITISE)
-    set(SANITISE OFF)
+if (NOT DEFINED SANITIZE)
+    set(SANITIZE OFF)
+endif()
+
+# Set flag for creating test binary (Default: OFF)
+if (NOT DEFINED TEST)
+    set(TEST OFF)
 endif()
 
 # Specify the preferred usage of pthread
@@ -58,6 +68,7 @@ message(
     "PROJECT_DIR=${CMAKE_HOME_DIRECTORY}\n"
     "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\n"
     "CMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}\n"
+    "BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}\n"
     "PROFILING=${PROFILING}\n"
     "SANITISE=${SANITISE}\n"
     "TEST=${TEST}\n"
@@ -113,7 +124,7 @@ set(
 
 ##### Define targets #####
 
-set(TARGET_LIBMATHPP "libmathpp")
+set(TARGET_MATHPP "mathpp")
 set(TARGET_RUN_EXAMPLE "run_example")
 set(TARGET_RUN_TESTS "run_tests")
 
