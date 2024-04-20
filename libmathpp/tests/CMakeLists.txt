@@ -1,11 +1,5 @@
-set(
-    LIBRARIES
-    "${LIBRARIES}"
-    Catch2::Catch2
-)
-
 add_executable(${TARGET_RUN_TESTS} "main.cpp")
-target_link_libraries(${TARGET_RUN_TESTS} PRIVATE "${LIBRARIES}")
+target_link_libraries(${TARGET_RUN_TESTS} PRIVATE "${LIBRARIES}" Catch2::Catch2)
 
 include(CTest)
 include(Catch)

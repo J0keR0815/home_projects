@@ -16,6 +16,9 @@ project(
 
 ##### Default configuration options #####
 
+# Set C++ standard version to C++20
+set(CMAKE_CXX_STANDARD 20)
+
 # Set default compiler and linker
 set(CMAKE_C_COMPILER "/usr/bin/gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
@@ -124,7 +127,7 @@ set(
 
 ##### Define targets #####
 
-set(TARGET_MATHPP "mathpp")
+set(TARGET_LIB_MATHPP "mathpp")
 set(TARGET_RUN_EXAMPLE "run_example")
 set(TARGET_RUN_TESTS "run_tests")
 
